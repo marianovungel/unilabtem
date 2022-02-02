@@ -1,23 +1,35 @@
-import logo from './logo.svg';
 import './App.css';
+import api from './Service/api'
+import { useEffect, useState } from 'react'
 
 function App() {
+  const [hello, setHello] = useState([])
+  const getHello = async ()=>{
+    try{
+      const response = await api.get('/hello/61f9dc332036ead27f4fada1');
+      const res = response.data;
+
+      if(res.error){
+        alert(res.message);
+        return false;
+      }
+
+      setHello(res);
+      console.log(res)
+
+    }catch(err){
+      alert(err.message);
+    }
+  }
+
+  useEffect(() => {
+    getHello();
+  }, [])
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+     {/* {hello?.map((post)=>(<h1>{post?.text}</h1>))} */}
+     <h1>{hello.text}</h1>
     </div>
   );
 }
